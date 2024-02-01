@@ -91,42 +91,76 @@ static void Help()
 
 Console.WriteLine("---Welcome to Tochi's To Do list. Type help for tips.---");
 
-static void Start()
+static void Start(List<ListItem> listItems)
 { 
-    Console.Write(">>");
+    Console.Write(">> ");
     string input;
     input = Console.ReadLine();
     string mode = input.Split(" ")[0];
 
     switch (mode)
     {
-        case string m when m == "add":
-            Console.WriteLine("hi");
+        case string m when m == "-add":
+            try
+            {
+                input = input.Replace("-add ", "");
+                DateTime date = DateTime.Now;
+
+                ListItem newItem = new ListItem(input, date, 0, false);
+
+                if (AddItem(newItem, listItems))
+                {
+                    Console.WriteLine("added '"+ input + "' to list!");
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            break;
+        case string m when m == "-remove":
+            try
+            {
+                input = input.Replace("-remove ", "");
+
+                RemoveItem(Convert.ToInt32(input), listItems);
+
+                Console.WriteLine("removed '" + input + "' from list!");
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            break;
+        case string m when m == "-remove":
+            try
+            {
+                input = input.Replace("-remove ", "");
+
+                RemoveItem(Convert.ToInt32(input), listItems);
+
+                Console.WriteLine("removed '" + input + "' from list!");
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             break;
         default:
             Help();
             break;
     }
-    Start();
+    Start(listItems);
 }
 
-Start();
+Start(listItems);
 
 
 
-string task;
-DateTime date = DateTime.Now;
 
-Console.Write("Enter your task: ");
-task = Console.ReadLine();
-
-ListItem newItem = new ListItem(task, date, 0, false);
-
-if (AddItem(newItem, listItems))
-{
-    Console.WriteLine("added new task to list!");
-    
-}
 
 
 
