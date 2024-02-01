@@ -110,13 +110,14 @@ static void Start(List<ListItem> listItems)
 
                 if (AddItem(newItem, listItems))
                 {
-                    Console.WriteLine("added '"+ input + "' to list!");
+                    Console.WriteLine(">> added '"+ input + "' to list!");
 
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(">> " + e.Message);
+                Console.WriteLine(">> Unable to add. Type 'help'");
             }
             break;
         case string m when m == "-remove":
@@ -126,27 +127,35 @@ static void Start(List<ListItem> listItems)
 
                 RemoveItem(Convert.ToInt32(input), listItems);
 
-                Console.WriteLine("removed '" + input + "' from list!");
+                Console.WriteLine(">> removed '" + input + "' from list!");
 
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(">> "+e.Message);
+                Console.WriteLine(">> Unable to remove. Type 'help'");
             }
             break;
-        case string m when m == "-remove":
+        case string m when m == "-get":
             try
             {
-                input = input.Replace("-remove ", "");
+                input = input.Replace("-get ", "");
 
-                RemoveItem(Convert.ToInt32(input), listItems);
+                int type = Convert.ToInt32(input.Split(" ")[0]);
 
-                Console.WriteLine("removed '" + input + "' from list!");
+                if (type == 0)
+                {
+                    GetAllItems(listItems);
+                }
+                else if (type == 1)
+                {
+                    GetItem(listItems, Convert.ToInt32(input.Split(" ")[1]));
+                }
 
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(">> "+e.Message);
             }
             break;
         default:
