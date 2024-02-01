@@ -8,14 +8,13 @@ List<ListItem> listItems = new List<ListItem>();
 static bool AddItem(ListItem newItem, List<ListItem> listItems)
 {
 
-    bool added = false;
+    DateTime date = DateTime.Now;
 
-
+    newItem.Date = date;
     newItem.Index = listItems.Count;
     listItems.Add(newItem);
-    added = true;
 
-    return added;
+    return true;
 
 }
 
@@ -46,6 +45,72 @@ static bool GetAllItems(List<ListItem> listItems)
     return true;
 }
 
+static bool GetItem(List<ListItem> listItems, int aIndex)
+{
+
+    Console.WriteLine("--|completed|task|date|--");
+    string complete;
+    if (listItems[aIndex].Complete)
+    {
+        complete = "✔️";
+    }
+    else
+    {
+        complete = "no";
+    }
+    Console.WriteLine("-------------------------");
+    Console.WriteLine(" " + listItems[aIndex].Index + "|" + complete + "|" + listItems[aIndex].Task + "|" + listItems[aIndex].Date.ToString() + "|");
+    Console.WriteLine("-------------------------");
+
+    return true;
+
+}
+
+static bool Edit(List<ListItem> listItems, int aIndex, string editedTask)
+{
+
+    foreach (var items in listItems)
+    {
+        if (items.Index == aIndex)
+        {
+            items.Task = editedTask;
+
+            break;
+        }
+    }
+
+    return true;
+
+}
+
+static void Help()
+{
+
+}
+
+
+Console.WriteLine("---Welcome to Tochi's To Do list. Type help for tips.---");
+
+static void Start()
+{ 
+    Console.Write(">>");
+    string input;
+    input = Console.ReadLine();
+    string mode = input.Split(" ")[0];
+
+    switch (mode)
+    {
+        case string m when m == "add":
+            Console.WriteLine("hi");
+            break;
+        default:
+            Help();
+            break;
+    }
+    Start();
+}
+
+Start();
 
 
 
@@ -63,8 +128,7 @@ if (AddItem(newItem, listItems))
     
 }
 
-GetAllItems(listItems);
-RemoveItem(0, listItems);
-GetAllItems(listItems);
+
+
 
 
