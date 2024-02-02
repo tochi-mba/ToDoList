@@ -100,7 +100,7 @@ static void Help()
 
 Console.WriteLine("---Welcome to Tochi's To Do list. Type help for tips.---");
 
-static void Start(List<ListItem> listItems)
+while (true)
 { 
     Console.Write(">> ");
     string input;
@@ -136,7 +136,7 @@ static void Start(List<ListItem> listItems)
 
                 RemoveItem(Convert.ToInt32(input), listItems);
 
-                Console.WriteLine(">> removed '" + input + "' from list!");
+                Console.WriteLine(">> removed '" + listItems[Convert.ToInt32(input)].Task + "' from list!");
 
             }
             catch (Exception e)
@@ -167,14 +167,32 @@ static void Start(List<ListItem> listItems)
                 Console.WriteLine(">> "+e.Message);
             }
             break;
+        case string m when m == "-edit":
+            try
+            {
+                input = input.Replace("-edit ", "");
+
+                int index = Convert.ToInt32(input.Split(" ")[0]);
+
+                string editedTask = input.Split(" ")[1];
+
+                Edit(listItems, index, editedTask);
+
+                Console.WriteLine(">> edited successfully!");
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(">> " + e.Message);
+            }
+            break;
         default:
             Help();
             break;
     }
-    Start(listItems);
+    
 }
 
-Start(listItems);
 
 
 
