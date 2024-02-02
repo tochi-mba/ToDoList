@@ -94,6 +94,42 @@ static bool Edit(List<ListItem> listItems, int aIndex, string editedTask)
 
 static void Help()
 {
+    Console.WriteLine("--- Tochi's To-Do List Cheat Sheet ---\n");
+
+    Console.WriteLine("- Add Task:");
+    Console.WriteLine("  Syntax: -add [task_description]");
+    Console.WriteLine("  Example: -add Buy groceries");
+    Console.WriteLine("  Description: Adds a new task to the to-do list.\n");
+
+    Console.WriteLine("- Remove Task:");
+    Console.WriteLine("  Syntax: -remove [task_index]");
+    Console.WriteLine("  Example: -remove 1");
+    Console.WriteLine("  Description: Removes the task at the specified index from the to-do list.\n");
+
+    Console.WriteLine("- Get Tasks:");
+    Console.WriteLine("  Syntax: -get [type] [index (optional)]");
+    Console.WriteLine("  Example 1: -get 0");
+    Console.WriteLine("  Example 2: -get 1 2");
+    Console.WriteLine("  Description:");
+    Console.WriteLine("    - -get 0: Get all tasks in the to-do list.");
+    Console.WriteLine("    - -get 1 [index]: Get details of the task at the specified index.\n");
+
+    Console.WriteLine("- Edit Task:");
+    Console.WriteLine("  Syntax: -edit [task_index] [new_task_description]");
+    Console.WriteLine("  Example: -edit 1 Update task description");
+    Console.WriteLine("  Description: Edits the task description at the specified index.\n");
+
+    Console.WriteLine("- Help:");
+    Console.WriteLine("  Syntax: help");
+    Console.WriteLine("  Description: Displays tips and information about available commands.\n");
+
+    Console.WriteLine("--- Usage Example ---");
+    Console.WriteLine("- To add a task: -add Buy groceries");
+    Console.WriteLine("- To remove a task: -remove 1");
+    Console.WriteLine("- To get all tasks: -get 0");
+    Console.WriteLine("- To get a specific task: -get 1 2");
+    Console.WriteLine("- To edit a task: -edit 1 Update task description");
+    Console.WriteLine("- For help: help");
 
 }
 
@@ -174,7 +210,7 @@ while (true)
 
                 int index = Convert.ToInt32(input.Split(" ")[0]);
 
-                string editedTask = input.Split(" ")[1];
+                string editedTask = string.Join(" ", input.Split(" ").Skip(1));
 
                 Edit(listItems, index, editedTask);
 
@@ -186,8 +222,10 @@ while (true)
                 Console.WriteLine(">> " + e.Message);
             }
             break;
-        default:
+        case string m when m == "help":
             Help();
+            break;
+        default:
             break;
     }
     
