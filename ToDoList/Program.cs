@@ -21,6 +21,15 @@ static bool AddItem(ListItem newItem, List<ListItem> listItems)
 static bool RemoveItem(int aIndex, List<ListItem> listItems)
 {
     listItems.RemoveAt(aIndex);
+
+    int i = 0;
+
+    foreach (var item in listItems)
+    {
+        item.Index = i;
+        i++;
+    }
+
     return true;
 }
  
