@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -99,7 +100,43 @@ namespace ToDoList
             return data.ToString();
         }
 
-        static string[] Save(string[] args, List<ListItem> listItems, string groupName = "", string dirPath = "default", bool AutoSave = false)
+        static string[] Merge(string[] filesContent, string targetFile)
+        {
+            try
+            {
+                string mergedContent = "";
+
+                for (int i = 0; i < filesContent.Length; i++)
+                {
+                    mergedContent += filesContent[i];
+                }
+
+                using (StreamWriter sw = new StreamWriter(targetFile))
+                {
+                    sw.Write(mergedContent);
+                }
+
+                Console.WriteLine($">> Successfully merged to {targetFile}");
+                Console.WriteLine(">> Opening merged file...");
+
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = targetFile,
+                    UseShellExecute = true
+                };
+
+                Process.Start(psi);
+
+                return new string[] { "true", targetFile };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(">> " + e.Message);
+                return new string[] { "false", targetFile };
+            }
+        }
+
+        static string[] Save(string[] args, List<ListItem> listItems, string groupName = "", string dirPath = "default", bool autoSave = false)
         {
             string directory = dirPath;
             string file;
@@ -124,15 +161,26 @@ namespace ToDoList
             {
                 if (args.Length == 0 && File.Exists(file))
                 {
-                    Console.Write($"File '{file}' already exists. Do you want to override it? (Y/N): ");
+                    Console.Write($"File '{file}' already exists. Do you want to overide it or merge it? (O/M/N): ");
                     ConsoleKeyInfo key = Console.ReadKey();
                     Console.WriteLine();
 
-                    if (key.Key != ConsoleKey.Y)
+                    if (key.Key == ConsoleKey.O)
+                    {}
+                    else if (key.Key == ConsoleKey.M)
+                    {
+                        string content1 = File.ReadAllText(file);
+
+                        string content2 = TochiCompiler(listItems);
+
+                        return Merge([content1, content2], file);
+                    }
+                    else
                     {
                         Console.WriteLine(">> Save operation canceled.");
                         return new string[] { "false", file };
                     }
+
                 }
 
                 if (File.Exists(file) && args.Length > 0 && file != args[0])
@@ -169,25 +217,7 @@ namespace ToDoList
 
                         string content2 = File.ReadAllText(args[0]);
 
-                        string mergedContent = content1 + content2;
-
-                        using (StreamWriter sw = new StreamWriter(file))
-                        {
-                            sw.Write(mergedContent);
-                        }
-
-                        Console.WriteLine($">> Successfully merged to {file}");
-                        Console.WriteLine(">> Opening merged file...");
-
-                        ProcessStartInfo psi2 = new ProcessStartInfo
-                        {
-                            FileName = file,
-                            UseShellExecute = true
-                        };
-
-                        Process.Start(psi2);
-
-                        return new string[] { "true", file };
+                        return Merge([content1, content2], file);
                     }
                     else
                     {
@@ -201,7 +231,7 @@ namespace ToDoList
                     sw.Write(TochiCompiler(listItems));
                 }
 
-                if (!AutoSave)
+                if (!autoSave)
                 {
                     Console.WriteLine(">> Successfully saved to " + file);
                     Console.WriteLine(">> Opening file...");
@@ -294,7 +324,7 @@ namespace ToDoList
         {
             if (args.Length > 0)
             {
-                Save(args, listItems, AutoSave: true);
+                Save(args, listItems, autoSave: true);
             }
         }
 
