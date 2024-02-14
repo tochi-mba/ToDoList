@@ -16,7 +16,7 @@ else
 {
     while (true)
     {
-        functions.Run(listItems);
+        functions.Run(listItems, args);
     }
 }
 

@@ -29,20 +29,13 @@ namespace ToDoList
             for (int j = 0; j < fileDataList.Count; j++)
             {
 
-                string[] returnVal = functions.Run(listItems, fileDataList[j]);
+                string[] returnVal = functions.Run(listItems, args, fileDataList[j]);
 
-                if (returnVal[0] == "true")
-                {
-                    if (returnVal[1] == "")
-                    {
-                        Console.WriteLine(">> " + args[0] + " File Corrupted!: Line " + (j + 1));
-                    }
-                }
-                else if (returnVal[0] == "false" && returnVal[1] == "")
+                if (returnVal[0] == "false" && returnVal[1] == "")
                 {
                     Console.WriteLine(">> " + args[0] + " File Error " + returnVal[1] + ": Line " + (j + 1));
                 }
-                else
+                else if (returnVal[0] == "false")
                 {
                     Console.WriteLine(">> " + args[0] + " File Error!: Line " + (j + 1));
 
@@ -50,9 +43,12 @@ namespace ToDoList
 
             }
 
+
+            functions.Run(listItems, args,"-get 0");
+
             while (true)
             {
-                functions.Run(listItems);
+                functions.Run(listItems, args);
             }
             
         }
