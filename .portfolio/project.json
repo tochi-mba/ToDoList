@@ -1,0 +1,11 @@
+{
+  "$schema": "https://tochi-mba.github.io/schema/project.schema.json",
+  "slug": "todo-list",
+  "name": "To-do list CLI",
+  "tagline": "A CLI to-do list with commands and arguments, built on string manipulation.",
+  "stack": ["C#"],
+  "category": "early",
+  "status": "archived",
+  "order": 730,
+  "display": true
+}
